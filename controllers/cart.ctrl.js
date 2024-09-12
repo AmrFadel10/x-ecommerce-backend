@@ -116,42 +116,12 @@ exports.emptyCartCtrl = async (req, res, next) => {
 		if (!user) {
 			return next(new ApiHandler(404, "Invalid user id"));
 		}
-		const cart = await Cart.findOneAndDelete({ orderBy: user._id });
+		const cart = await Cart.deleteMany({ user: user._id });
 
 		if (!cart) {
 			return next(new ApiHandler(400, "No cart provided for this user!"));
 		}
-		return res.status(200).json(cart);
-	} catch (error) {
-		next(error);
-	}
-};
-
-//------------------------------------------------------------------------------
-//apply coupon
-//------------------------------------------------------------------------------
-exports.applyCouponCtrl = async (req, res, next) => {
-	const { id } = req.user;
-	try {
-		validateMongoDbID(id);
-		const user = await User.findById(id);
-		if (!user) {
-			return next(new ApiHandler(404, "Invalid user id"));
-		}
-		let coupon = await Coupon.findOne({ name: req.body.name });
-		if (!coupon) {
-			return next(new ApiHandler(404, "Invalid coupon"));
-		}
-		let { cartTotal } = await Cart.findOne({ orderBy: id });
-		let afterDiscount = parseInt(
-			(cartTotal - (cartTotal * coupon.discount) / 100).toFixed(2)
-		);
-		await Cart.findOneAndUpdate(
-			{ orderBy: user._id },
-			{ totalAfterDiscount: afterDiscount },
-			{ new: true }
-		);
-		res.status(200).json(afterDiscount);
+		return res.sendStatus(204);
 	} catch (error) {
 		next(error);
 	}

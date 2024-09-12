@@ -81,9 +81,15 @@ const userSchema = mongoose.Schema(
 				ref: "Product",
 			},
 		],
+		compareProducts: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Product",
+			},
+		],
 		passwordChangedAt: Date,
 		passwordResetToken: String,
-		passwordResetExpires: Date,
+		passwordResetExpires: Number,
 	},
 	{ timestamps: true }
 );
@@ -113,7 +119,7 @@ userSchema.methods.createPasswordResetToken = function () {
 		.createHash("sha256")
 		.update(resetToken)
 		.digest("hex");
-	this.passwordResetExpires = Date.now() + 30 * 60 * 1000; //10 min
+	this.passwordResetExpires = Date.now() + 10 * 60 * 1000; //10 min
 	return resetToken;
 };
 

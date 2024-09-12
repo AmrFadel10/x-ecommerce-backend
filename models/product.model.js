@@ -56,10 +56,6 @@ const productSchema = new mongoose.Schema(
 				ref: "Color",
 			},
 		],
-		tags: {
-			type: String,
-			required: true,
-		},
 
 		ratings: [
 			{

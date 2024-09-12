@@ -14,10 +14,10 @@ const { uploadOnCloud } = require("../utils/cloudinary");
 exports.createUserCtrl = async (req, res, next) => {
 	const { fullname, password, email } = req.body;
 	try {
-		const user = await User.findOne({ email });
 		if (!req.file) {
 			return next(new ApiHandler(400, "Enter you photo please!"));
 		}
+		const user = await User.findOne({ email });
 		if (user) {
 			const des = path.join(__dirname, "../assets/images", req.file.filename);
 			fs.unlinkSync(des);
@@ -226,7 +226,7 @@ exports.forgotPasswordCtrl = async (req, res, next) => {
 			htm: `<div>To reset you password. you must be click on this link <a href="http://localhost:5173/reset-password/${token}">Click here</a></div>`,
 		});
 
-		res.status(204).send();
+		res.sendStatus(204);
 	} catch (error) {
 		next(error);
 	}

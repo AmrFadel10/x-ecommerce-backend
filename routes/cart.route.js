@@ -21,6 +21,4 @@ router
 	.delete(verifyToken, deleteProductFromCartCtrl);
 router.route("/empty").delete(verifyToken, emptyCartCtrl);
 
-router.route("/apply-coupon").post(verifyToken, applyCouponCtrl);
-
 module.exports = router;

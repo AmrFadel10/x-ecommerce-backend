@@ -10,6 +10,8 @@ const {
 	getWishlistCtrl,
 	saveAddressCtrl,
 	addWishlistCtrl,
+	getCompareProducts,
+	addCompareProductsCtrl,
 } = require("../controllers/user.ctrl");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 const { validateId } = require("../middlewares/validateId");
@@ -25,6 +27,12 @@ router
 	.route("/wishlist")
 	.get(verifyToken, getWishlistCtrl)
 	.put(verifyToken, addWishlistCtrl);
+
+//get and update compare for the user
+router
+	.route("/compare")
+	.get(verifyToken, getCompareProducts)
+	.put(verifyToken, addCompareProductsCtrl);
 
 // add products to cart
 router.post("/cart", verifyToken, getWishlistCtrl);

@@ -13,18 +13,17 @@ DbConnection();
 //------------------------------------------------------------------//
 
 //Middlewares
-app.use(express.static("./assets/images"));
+app.use("/images", express.static("./assets/images")); // for get images by useing /images after website link
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
-	cors({
-		origin: ["http://localhost:5173", "http://localhost:5174"],
-		credentials: true,
-	})
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    credentials: true,
+  })
 );
 app.use(morgan("dev"));
-
 //------------------------------------------------------------------//
 
 //Routes
@@ -52,12 +51,12 @@ app.all(notFound);
 
 //Error
 app.use((err, req, res, next) => {
-	err.statusCode = err.statusCode || 500;
-	res.status(err.statusCode).json({
-		error: err,
-		message: err.message,
-		stack: err.stack,
-	});
+  err.statusCode = err.statusCode || 500;
+  res.status(err.statusCode).json({
+    error: err,
+    message: err.message,
+    stack: err.stack,
+  });
 });
 
 //------------------------------------------------------------------//
@@ -65,5 +64,5 @@ app.use((err, req, res, next) => {
 //Server is working
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-	console.log(`The server is worrking on port : ${port}`);
+  console.log(`The server is worrking on port : ${port}`);
 });

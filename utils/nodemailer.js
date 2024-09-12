@@ -4,12 +4,12 @@ const ApiHandler = require("./ApiHandler");
 const sendMail = async (options) => {
 	try {
 		const transport = nodemailer.createTransport({
-			host: process.env.SMPT_SERVICE,
-			port: process.env.SMPT_PORT,
+			host: process.env.SMTP_SERVICE,
+			port: process.env.SMTP_PORT,
 			// secure: true, // true for 465, false for other ports
 			auth: {
-				user: process.env.SMPT_MAIL,
-				pass: process.env.SMPT_PASS,
+				user: process.env.SMTP_MAIL,
+				pass: process.env.SMTP_PASS,
 			},
 		});
 

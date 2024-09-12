@@ -1,8 +1,5 @@
 const { validateMongoDbID } = require("../middlewares/validateId");
-const Cart = require("../models/cart.model");
 const Order = require("../models/order.model");
-const Product = require("../models/product.model");
-const { User } = require("../models/user.model");
 const ApiHandler = require("../utils/ApiHandler");
 
 exports.createOrderCtrl = async (req, res, next) => {
@@ -29,61 +26,6 @@ exports.createOrderCtrl = async (req, res, next) => {
 		next(error);
 	}
 };
-
-//----------------------------------------------------------------------------------
-// exports.createOrderCtrl = async (req, res, next) => {
-// 	const { COD, couponApplied } = req.body;
-// 	const { id } = req.user;
-// 	try {
-// 		validateMongoDbID(id);
-
-// 		if (!COD) {
-// 			return next(new ApiHandler(400, "Create cash order failed!"));
-// 		}
-// 		const user = await User.findById(id);
-
-// 		if (!user) {
-// 			return next(new ApiHandler(400, "User not found!"));
-// 		}
-
-// 		const userCart = await Cart.findOne({ orderBy: id });
-
-// 		let finalAmount = 0;
-// 		if (couponApplied && userCart.totalAfterDiscount) {
-// 			finalAmount = userCart.totalAfterDiscount;
-// 		} else {
-// 			finalAmount = userCart.cartTotal;
-// 		}
-
-// 		await Order.create({
-// 			products: userCart.products,
-// 			paymentIntent: {
-// 				id: Date.now() + Math.random() * 1e9,
-// 				method: "COD",
-// 				amount: finalAmount,
-// 				status: "Cash on Delivery",
-// 				created: Date.now(),
-// 				currency: "USD",
-// 			},
-// 			orderStatus: "Cash on Delivery",
-// 			orderBy: user._id,
-// 		});
-
-// 		const update = userCart.products.map((item) => {
-// 			return {
-// 				updateOne: {
-// 					filter: { _id: item.product },
-// 					update: { $inc: { quantity: -item.count, sold: +item.count } },
-// 				},
-// 			};
-// 		});
-
-// 		await Product.bulkWrite(update, {});
-// 		res.status(201).json("The order has been successfully!");
-// 	} catch (error) {
-// 		next(error);
-// 	}
-// };
 
 exports.getMyOrderCtrl = async (req, res, next) => {
 	const { id } = req.user;

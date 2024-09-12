@@ -32,7 +32,6 @@ exports.getAllUserCtrl = async (req, res, next) => {
 //update user
 exports.updateUserCtrl = async (req, res, next) => {
 	try {
-		console.log(req.body);
 		const findUser = await User.findById(req.user.id);
 		if (!findUser) {
 			return next(new ApiHandler(404, "User not found"));
@@ -189,7 +188,6 @@ exports.addWishlistCtrl = async (req, res, next) => {
 				{ new: true }
 			);
 		}
-		console.log(user);
 		return res.status(200).json(user);
 	} catch (error) {
 		next(error);
@@ -204,6 +202,56 @@ exports.getWishlistCtrl = async (req, res, next) => {
 			return next(new ApiHandler(404, "User not found"));
 		}
 		res.status(200).json(findUser);
+	} catch (error) {
+		next(error);
+	}
+};
+
+//compare products
+exports.addCompareProductsCtrl = async (req, res, next) => {
+	const { prodId } = req.body;
+	console.log(req.body);
+
+	const userId = req.user.id;
+	try {
+		const user = await User.findById(userId);
+		if (!user) {
+			return next(new ApiHandler(404, "User not found"));
+		}
+		let compare = user.compareProducts.find(
+			(ele) => ele.toString() === prodId.toString()
+		);
+		if (compare) {
+			compare = await User.findByIdAndUpdate(
+				userId,
+				{
+					$pull: { compareProducts: prodId },
+				},
+				{ new: true }
+			);
+		} else {
+			compare = await User.findByIdAndUpdate(
+				userId,
+				{
+					$push: { compareProducts: prodId },
+				},
+				{ new: true }
+			);
+		}
+		res.status(200).json(compare);
+	} catch (error) {
+		next(error);
+	}
+};
+
+//Get compare products
+exports.getCompareProducts = async (req, res, next) => {
+	try {
+		let user = await User.findById(req.user.id).populate("compareProducts");
+		if (!user) {
+			return next(new ApiHandler(404, "User not found"));
+		}
+		res.status(200).json(user);
 	} catch (error) {
 		next(error);
 	}
