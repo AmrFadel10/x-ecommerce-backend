@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: [process.env.AdminPanelURI, process.env.FRONTENDURI],
+    origin: [process.env.FRONTENDURI, process.env.AdminPanelURI],
     credentials: true,
   })
 );

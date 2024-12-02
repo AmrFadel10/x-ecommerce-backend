@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const ApiHandler = require("../utils/ApiHandler");
 const Product = require("../models/product.model");
-const { User } = require("../models/user.model");
 const { uploadOnCloud, deleteFromCloud } = require("../utils/cloudinary");
 const { default: mongoose } = require("mongoose");
 

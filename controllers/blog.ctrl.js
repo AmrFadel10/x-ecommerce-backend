@@ -60,10 +60,11 @@ exports.getAllBlogCtrl = async (req, res, next) => {
   try {
     const blogs = await Blog.find().populate("likes").populate("dislikes");
     if (blogs.length === 0) {
-      return next(new ApiHandler("No Blogs allowed yet", 404));
+      return next(new ApiHandler(404, "No Blogs allowed yet"));
     }
     res.status(200).json(blogs);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -79,7 +80,7 @@ exports.updateBlogCtrl = async (req, res, next) => {
     const findBlog = await Blog.findById(req.params.id);
 
     if (!findBlog) {
-      return next(new ApiHandler("Blog not found", 404));
+      return next(new ApiHandler(404, "Blog not found"));
     }
 
     const updateteBlog = await Blog.findByIdAndUpdate(
