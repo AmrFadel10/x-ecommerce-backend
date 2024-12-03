@@ -77,7 +77,7 @@ exports.getAllProductsCtrl = async (req, res, next) => {
     let products = Product.find(editing2);
 
     //2)Pagination
-    const limit = +req.query.limit || 15;
+    const limit = +req.query.limit || 100;
     const page = +req.query.page || 1;
     const skip = (page - 1) * limit || 0;
 
